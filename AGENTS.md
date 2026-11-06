@@ -28,3 +28,10 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Project rules
+
+- Site copy is Brazilian Portuguese; keep new UI text in pt-BR.
+- All contact/purchase CTAs go through `whatsappLink()` in `src/lib/contato.ts` — the single source for the WhatsApp number, so it changes in one place.
+- Store categories/items live in `src/lib/produtos.ts` (static data, no checkout yet) so pages share one catalog.
+- Shared header/footer/floating WhatsApp button are mounted in `src/routes/__root.tsx`.
