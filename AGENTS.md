@@ -34,4 +34,5 @@ use the editor.
 - Site copy is Brazilian Portuguese; keep new UI text in pt-BR.
 - All contact/purchase CTAs go through `whatsappLink()` in `src/lib/contato.ts` — the single source for the WhatsApp number, so it changes in one place.
 - Store categories/items live in `src/lib/produtos.ts` (static data, no checkout yet) so pages share one catalog.
+- Blog posts live in `src/lib/blog.ts` as static content blocks (no CMS yet), rendered by `/blog` and `/blog/$slug`.
 - Shared header/footer/floating WhatsApp button are mounted in `src/routes/__root.tsx`.

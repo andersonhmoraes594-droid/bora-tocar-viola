@@ -9,6 +9,7 @@ import { WhatsAppIcon } from "./WhatsAppIcon";
 const NAV = [
   { to: "/curso", label: "Curso" },
   { to: "/loja", label: "Loja" },
+  { to: "/blog", label: "Blog" },
   { to: "/sobre", label: "Sobre mim" },
   { to: "/contato", label: "Contato" },
 ] as const;

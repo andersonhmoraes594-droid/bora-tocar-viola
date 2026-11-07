@@ -22,6 +22,7 @@ export function Footer() {
           <ul className="mt-4 space-y-2 text-sm">
             <li><Link to="/curso" className="text-muted-foreground hover:text-foreground">Curso de violão</Link></li>
             <li><Link to="/loja" className="text-muted-foreground hover:text-foreground">Loja</Link></li>
+            <li><Link to="/blog" className="text-muted-foreground hover:text-foreground">Blog</Link></li>
             <li><Link to="/sobre" className="text-muted-foreground hover:text-foreground">Sobre o professor</Link></li>
             <li><Link to="/contato" className="text-muted-foreground hover:text-foreground">Contato</Link></li>
           </ul>

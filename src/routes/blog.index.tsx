@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Clock } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
-import { POSTS, formatarData } from "@/lib/blog";
+import { PostMeta } from "@/components/site/PostMeta";
+import { POSTS } from "@/lib/blog";
 
 export const Route = createFileRoute("/blog/")({
   head: () => ({
@@ -23,7 +24,8 @@ export const Route = createFileRoute("/blog/")({
 });
 
 function BlogPage() {
-  const [destaque, ...outros] = POSTS;
+  const destaque = POSTS[0]!;
+  const outros = POSTS.slice(1);
 
   return (
     <div className="mx-auto max-w-6xl px-5 py-20 md:py-28">
@@ -92,19 +94,5 @@ function BlogPage() {
         ))}
       </div>
     </div>
-  );
-}
-
-export function PostMeta({ categoria, data, leitura }: { categoria: string; data: string; leitura: number }) {
-  return (
-    <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-medium uppercase tracking-wider text-muted-foreground">
-      <span className="text-primary">{categoria}</span>
-      <span>·</span>
-      <span>{formatarData(data)}</span>
-      <span>·</span>
-      <span className="inline-flex items-center gap-1">
-        <Clock className="size-3" /> {leitura} min
-      </span>
-    </p>
   );
 }
