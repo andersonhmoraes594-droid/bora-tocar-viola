@@ -1,0 +1,56 @@
+name: Deploy GitHub Pages
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - run: bun install --frozen-lockfile
+      - run: bun run build
+      - name: Prepare static output
+        shell: bash
+        run: |
+          if [ -f .output/public/index.html ]; then
+            SITE_DIR=.output/public
+          elif [ -f dist/client/index.html ]; then
+            SITE_DIR=dist/client
+          else
+            find .output dist -maxdepth 3 -type f 2>/dev/null || true
+            echo "No prerendered index.html found"
+            exit 1
+          fi
+          mkdir -p pages-output
+          cp -a "$SITE_DIR"/. pages-output/
+          touch pages-output/.nojekyll
+          echo boratocar.com.br > pages-output/CNAME
+          cp pages-output/index.html pages-output/404.html
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: pages-output
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
