@@ -4,7 +4,7 @@ export default defineConfig({
   tanstackStart: {
     server: { entry: "server" },
     prerender: {
-      enabled: true,
+      enabled: process.env.GITHUB_ACTIONS === "true",
       autoSubfolderIndex: true,
       crawlLinks: true,
       failOnError: true,
