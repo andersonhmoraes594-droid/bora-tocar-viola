@@ -33,7 +33,7 @@ jobs:
                   continue
               target = pathlib.Path("public") / url.lstrip("/")
               target.parent.mkdir(parents=True, exist_ok=True)
-              with urllib.request.urlopen("https://bora-tocar-viola.lovable.app" + url) as response:
+              with urllib.request.urlopen("https://id-preview--986f1ad6-8c3c-48e6-bb3a-fc05887e949a.lovable.app" + url) as response:
                   if not response.headers.get("Content-Type", "").startswith("image/"):
                       raise RuntimeError("Asset did not return an image: " + url)
                   target.write_bytes(response.read())
