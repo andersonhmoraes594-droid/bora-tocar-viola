@@ -10,16 +10,29 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ContatoRouteImport } from './routes/contato'
 import { Route as CursoRouteImport } from './routes/curso'
 import { Route as LojaRouteImport } from './routes/loja'
+import { Route as PrimeiroAcessoRouteImport } from './routes/primeiro-acesso'
 import { Route as SobreRouteImport } from './routes/sobre'
+import { Route as AuthenticatedAreaDoAlunoRouteImport } from './routes/_authenticated/area-do-aluno'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContatoRoute = ContatoRouteImport.update({
@@ -37,11 +50,22 @@ const LojaRoute = LojaRouteImport.update({
   path: '/loja',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PrimeiroAcessoRoute = PrimeiroAcessoRouteImport.update({
+  id: '/primeiro-acesso',
+  path: '/primeiro-acesso',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SobreRoute = SobreRouteImport.update({
   id: '/sobre',
   path: '/sobre',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAreaDoAlunoRoute =
+  AuthenticatedAreaDoAlunoRouteImport.update({
+    id: '/area-do-aluno',
+    path: '/area-do-aluno',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const BlogIndexRoute = BlogIndexRouteImport.update({
   id: '/blog/',
   path: '/blog/',
@@ -55,54 +79,90 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/contato': typeof ContatoRoute
   '/curso': typeof CursoRoute
   '/loja': typeof LojaRoute
+  '/primeiro-acesso': typeof PrimeiroAcessoRoute
   '/sobre': typeof SobreRoute
+  '/area-do-aluno': typeof AuthenticatedAreaDoAlunoRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/blog/': typeof BlogIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/contato': typeof ContatoRoute
   '/curso': typeof CursoRoute
   '/loja': typeof LojaRoute
+  '/primeiro-acesso': typeof PrimeiroAcessoRoute
   '/sobre': typeof SobreRoute
+  '/area-do-aluno': typeof AuthenticatedAreaDoAlunoRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/blog': typeof BlogIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
   '/contato': typeof ContatoRoute
   '/curso': typeof CursoRoute
   '/loja': typeof LojaRoute
+  '/primeiro-acesso': typeof PrimeiroAcessoRoute
   '/sobre': typeof SobreRoute
+  '/_authenticated/area-do-aluno': typeof AuthenticatedAreaDoAlunoRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/blog/': typeof BlogIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/contato' | '/curso' | '/loja' | '/sobre' | '/blog/$slug' | '/blog/'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/contato' | '/curso' | '/loja' | '/sobre' | '/blog/$slug' | '/blog'
-  id:
-    | '__root__'
     | '/'
+    | '/auth'
     | '/contato'
     | '/curso'
     | '/loja'
+    | '/primeiro-acesso'
     | '/sobre'
+    | '/area-do-aluno'
+    | '/blog/$slug'
+    | '/blog/'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | '/'
+    | '/auth'
+    | '/contato'
+    | '/curso'
+    | '/loja'
+    | '/primeiro-acesso'
+    | '/sobre'
+    | '/area-do-aluno'
+    | '/blog/$slug'
+    | '/blog'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/contato'
+    | '/curso'
+    | '/loja'
+    | '/primeiro-acesso'
+    | '/sobre'
+    | '/_authenticated/area-do-aluno'
     | '/blog/$slug'
     | '/blog/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
   ContatoRoute: typeof ContatoRoute
   CursoRoute: typeof CursoRoute
   LojaRoute: typeof LojaRoute
+  PrimeiroAcessoRoute: typeof PrimeiroAcessoRoute
   SobreRoute: typeof SobreRoute
   BlogSlugRoute: typeof BlogSlugRoute
   BlogIndexRoute: typeof BlogIndexRoute
@@ -115,6 +175,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contato': {
@@ -138,12 +212,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LojaRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/primeiro-acesso': {
+      id: '/primeiro-acesso'
+      path: '/primeiro-acesso'
+      fullPath: '/primeiro-acesso'
+      preLoaderRoute: typeof PrimeiroAcessoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sobre': {
       id: '/sobre'
       path: '/sobre'
       fullPath: '/sobre'
       preLoaderRoute: typeof SobreRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/area-do-aluno': {
+      id: '/_authenticated/area-do-aluno'
+      path: '/area-do-aluno'
+      fullPath: '/area-do-aluno'
+      preLoaderRoute: typeof AuthenticatedAreaDoAlunoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/blog/': {
       id: '/blog/'
@@ -162,11 +250,25 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAreaDoAlunoRoute: typeof AuthenticatedAreaDoAlunoRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAreaDoAlunoRoute: AuthenticatedAreaDoAlunoRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
   ContatoRoute: ContatoRoute,
   CursoRoute: CursoRoute,
   LojaRoute: LojaRoute,
+  PrimeiroAcessoRoute: PrimeiroAcessoRoute,
   SobreRoute: SobreRoute,
   BlogSlugRoute: BlogSlugRoute,
   BlogIndexRoute: BlogIndexRoute,
