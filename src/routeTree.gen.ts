@@ -18,6 +18,7 @@ import { Route as LojaRouteImport } from './routes/loja'
 import { Route as PrimeiroAcessoRouteImport } from './routes/primeiro-acesso'
 import { Route as SobreRouteImport } from './routes/sobre'
 import { Route as AuthenticatedAreaDoAlunoRouteImport } from './routes/_authenticated/area-do-aluno'
+import { Route as AuthenticatedProfessorRouteImport } from './routes/_authenticated/professor'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 
@@ -66,6 +67,11 @@ const AuthenticatedAreaDoAlunoRoute =
     path: '/area-do-aluno',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedProfessorRoute = AuthenticatedProfessorRouteImport.update({
+  id: '/professor',
+  path: '/professor',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const BlogIndexRoute = BlogIndexRouteImport.update({
   id: '/blog/',
   path: '/blog/',
@@ -86,6 +92,7 @@ export interface FileRoutesByFullPath {
   '/primeiro-acesso': typeof PrimeiroAcessoRoute
   '/sobre': typeof SobreRoute
   '/area-do-aluno': typeof AuthenticatedAreaDoAlunoRoute
+  '/professor': typeof AuthenticatedProfessorRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/blog/': typeof BlogIndexRoute
 }
@@ -98,6 +105,7 @@ export interface FileRoutesByTo {
   '/primeiro-acesso': typeof PrimeiroAcessoRoute
   '/sobre': typeof SobreRoute
   '/area-do-aluno': typeof AuthenticatedAreaDoAlunoRoute
+  '/professor': typeof AuthenticatedProfessorRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/blog': typeof BlogIndexRoute
 }
@@ -112,6 +120,7 @@ export interface FileRoutesById {
   '/primeiro-acesso': typeof PrimeiroAcessoRoute
   '/sobre': typeof SobreRoute
   '/_authenticated/area-do-aluno': typeof AuthenticatedAreaDoAlunoRoute
+  '/_authenticated/professor': typeof AuthenticatedProfessorRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/blog/': typeof BlogIndexRoute
 }
@@ -126,6 +135,7 @@ export interface FileRouteTypes {
     | '/primeiro-acesso'
     | '/sobre'
     | '/area-do-aluno'
+    | '/professor'
     | '/blog/$slug'
     | '/blog/'
   fileRoutesByTo: FileRoutesByTo
@@ -138,6 +148,7 @@ export interface FileRouteTypes {
     | '/primeiro-acesso'
     | '/sobre'
     | '/area-do-aluno'
+    | '/professor'
     | '/blog/$slug'
     | '/blog'
   id:
@@ -151,6 +162,7 @@ export interface FileRouteTypes {
     | '/primeiro-acesso'
     | '/sobre'
     | '/_authenticated/area-do-aluno'
+    | '/_authenticated/professor'
     | '/blog/$slug'
     | '/blog/'
   fileRoutesById: FileRoutesById
@@ -233,6 +245,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAreaDoAlunoRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/professor': {
+      id: '/_authenticated/professor'
+      path: '/professor'
+      fullPath: '/professor'
+      preLoaderRoute: typeof AuthenticatedProfessorRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/blog/': {
       id: '/blog/'
       path: '/blog'
@@ -252,10 +271,12 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAreaDoAlunoRoute: typeof AuthenticatedAreaDoAlunoRoute
+  AuthenticatedProfessorRoute: typeof AuthenticatedProfessorRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAreaDoAlunoRoute: AuthenticatedAreaDoAlunoRoute,
+  AuthenticatedProfessorRoute: AuthenticatedProfessorRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
