@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { professorJaCadastrado } from "@/lib/alunos.functions";
+import { destinoAposEntrar } from "@/lib/acesso";
 import { minhaContaQuery } from "@/lib/area-aluno.queries";
 import { useAuth } from "@/lib/auth";
 import { whatsappLink } from "@/lib/contato";
@@ -62,7 +63,7 @@ function AuthPage() {
     }
     const conta = await queryClient.fetchQuery(minhaContaQuery);
     setEnviando(false);
-    navigate({ to: conta?.isAdmin ? "/professor" : "/area-do-aluno" });
+    navigate({ to: destinoAposEntrar(conta) });
   }
 
   return (
@@ -113,9 +114,18 @@ function AuthPage() {
             </form>
           )}
 
+          {!session && (
+            <p className="mt-5 text-center text-sm text-muted-foreground">
+              Ainda não é aluno?{" "}
+              <Link to="/cadastro" className="font-semibold text-primary hover:underline">
+                Criar minha conta
+              </Link>
+            </p>
+          )}
+
           <div className="mt-8 space-y-2 border-t border-border pt-5 text-sm text-muted-foreground">
             <p>
-              Ainda não tem acesso ou esqueceu a senha?{" "}
+              Esqueceu a senha ou precisa de ajuda?{" "}
               <a
                 href={whatsappLink("Olá Anderson! Preciso de ajuda com meu acesso à Área do Aluno.")}
                 target="_blank"

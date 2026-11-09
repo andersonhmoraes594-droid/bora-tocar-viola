@@ -12,12 +12,15 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as CadastroRouteImport } from './routes/cadastro'
 import { Route as ContatoRouteImport } from './routes/contato'
 import { Route as CursoRouteImport } from './routes/curso'
 import { Route as LojaRouteImport } from './routes/loja'
 import { Route as PrimeiroAcessoRouteImport } from './routes/primeiro-acesso'
 import { Route as SobreRouteImport } from './routes/sobre'
 import { Route as AuthenticatedAreaDoAlunoRouteImport } from './routes/_authenticated/area-do-aluno'
+import { Route as AuthenticatedAssinaturaRouteImport } from './routes/_authenticated/assinatura'
+import { Route as AuthenticatedDuvidasRouteImport } from './routes/_authenticated/duvidas'
 import { Route as AuthenticatedProfessorRouteImport } from './routes/_authenticated/professor'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
@@ -34,6 +37,11 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CadastroRoute = CadastroRouteImport.update({
+  id: '/cadastro',
+  path: '/cadastro',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContatoRoute = ContatoRouteImport.update({
@@ -67,6 +75,16 @@ const AuthenticatedAreaDoAlunoRoute =
     path: '/area-do-aluno',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedAssinaturaRoute = AuthenticatedAssinaturaRouteImport.update({
+  id: '/assinatura',
+  path: '/assinatura',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedDuvidasRoute = AuthenticatedDuvidasRouteImport.update({
+  id: '/duvidas',
+  path: '/duvidas',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedProfessorRoute = AuthenticatedProfessorRouteImport.update({
   id: '/professor',
   path: '/professor',
@@ -86,12 +104,15 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/cadastro': typeof CadastroRoute
   '/contato': typeof ContatoRoute
   '/curso': typeof CursoRoute
   '/loja': typeof LojaRoute
   '/primeiro-acesso': typeof PrimeiroAcessoRoute
   '/sobre': typeof SobreRoute
   '/area-do-aluno': typeof AuthenticatedAreaDoAlunoRoute
+  '/assinatura': typeof AuthenticatedAssinaturaRoute
+  '/duvidas': typeof AuthenticatedDuvidasRoute
   '/professor': typeof AuthenticatedProfessorRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/blog/': typeof BlogIndexRoute
@@ -99,12 +120,15 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/cadastro': typeof CadastroRoute
   '/contato': typeof ContatoRoute
   '/curso': typeof CursoRoute
   '/loja': typeof LojaRoute
   '/primeiro-acesso': typeof PrimeiroAcessoRoute
   '/sobre': typeof SobreRoute
   '/area-do-aluno': typeof AuthenticatedAreaDoAlunoRoute
+  '/assinatura': typeof AuthenticatedAssinaturaRoute
+  '/duvidas': typeof AuthenticatedDuvidasRoute
   '/professor': typeof AuthenticatedProfessorRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/blog': typeof BlogIndexRoute
@@ -114,12 +138,15 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/cadastro': typeof CadastroRoute
   '/contato': typeof ContatoRoute
   '/curso': typeof CursoRoute
   '/loja': typeof LojaRoute
   '/primeiro-acesso': typeof PrimeiroAcessoRoute
   '/sobre': typeof SobreRoute
   '/_authenticated/area-do-aluno': typeof AuthenticatedAreaDoAlunoRoute
+  '/_authenticated/assinatura': typeof AuthenticatedAssinaturaRoute
+  '/_authenticated/duvidas': typeof AuthenticatedDuvidasRoute
   '/_authenticated/professor': typeof AuthenticatedProfessorRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/blog/': typeof BlogIndexRoute
@@ -129,12 +156,15 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/cadastro'
     | '/contato'
     | '/curso'
     | '/loja'
     | '/primeiro-acesso'
     | '/sobre'
     | '/area-do-aluno'
+    | '/assinatura'
+    | '/duvidas'
     | '/professor'
     | '/blog/$slug'
     | '/blog/'
@@ -142,12 +172,15 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/cadastro'
     | '/contato'
     | '/curso'
     | '/loja'
     | '/primeiro-acesso'
     | '/sobre'
     | '/area-do-aluno'
+    | '/assinatura'
+    | '/duvidas'
     | '/professor'
     | '/blog/$slug'
     | '/blog'
@@ -156,12 +189,15 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/cadastro'
     | '/contato'
     | '/curso'
     | '/loja'
     | '/primeiro-acesso'
     | '/sobre'
     | '/_authenticated/area-do-aluno'
+    | '/_authenticated/assinatura'
+    | '/_authenticated/duvidas'
     | '/_authenticated/professor'
     | '/blog/$slug'
     | '/blog/'
@@ -171,6 +207,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  CadastroRoute: typeof CadastroRoute
   ContatoRoute: typeof ContatoRoute
   CursoRoute: typeof CursoRoute
   LojaRoute: typeof LojaRoute
@@ -201,6 +238,13 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cadastro': {
+      id: '/cadastro'
+      path: '/cadastro'
+      fullPath: '/cadastro'
+      preLoaderRoute: typeof CadastroRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contato': {
@@ -245,6 +289,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAreaDoAlunoRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/assinatura': {
+      id: '/_authenticated/assinatura'
+      path: '/assinatura'
+      fullPath: '/assinatura'
+      preLoaderRoute: typeof AuthenticatedAssinaturaRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/duvidas': {
+      id: '/_authenticated/duvidas'
+      path: '/duvidas'
+      fullPath: '/duvidas'
+      preLoaderRoute: typeof AuthenticatedDuvidasRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/professor': {
       id: '/_authenticated/professor'
       path: '/professor'
@@ -271,11 +329,15 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAreaDoAlunoRoute: typeof AuthenticatedAreaDoAlunoRoute
+  AuthenticatedAssinaturaRoute: typeof AuthenticatedAssinaturaRoute
+  AuthenticatedDuvidasRoute: typeof AuthenticatedDuvidasRoute
   AuthenticatedProfessorRoute: typeof AuthenticatedProfessorRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAreaDoAlunoRoute: AuthenticatedAreaDoAlunoRoute,
+  AuthenticatedAssinaturaRoute: AuthenticatedAssinaturaRoute,
+  AuthenticatedDuvidasRoute: AuthenticatedDuvidasRoute,
   AuthenticatedProfessorRoute: AuthenticatedProfessorRoute,
 }
 
@@ -286,6 +348,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  CadastroRoute: CadastroRoute,
   ContatoRoute: ContatoRoute,
   CursoRoute: CursoRoute,
   LojaRoute: LojaRoute,

@@ -1,8 +1,9 @@
 import { Link } from "@tanstack/react-router";
-import { Menu, X } from "lucide-react";
+import { Menu, UserRound, X } from "lucide-react";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/lib/auth";
 import { whatsappLink } from "@/lib/contato";
 import { WhatsAppIcon } from "./WhatsAppIcon";
 
@@ -16,6 +17,7 @@ const NAV = [
 
 export function Header() {
   const [open, setOpen] = useState(false);
+  const { session } = useAuth();
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/85 backdrop-blur-md">
@@ -36,6 +38,11 @@ export function Header() {
               {item.label}
             </Link>
           ))}
+          <Button asChild variant="stage" size="sm">
+            <Link to={session ? "/area-do-aluno" : "/auth"}>
+              <UserRound /> {session ? "Minha área" : "Área do aluno"}
+            </Link>
+          </Button>
           <Button asChild variant="whatsapp" size="sm">
             <a href={whatsappLink("Olá Anderson! Vim pelo site Bora Tocar.")} target="_blank" rel="noreferrer">
               <WhatsAppIcon /> WhatsApp
@@ -67,6 +74,11 @@ export function Header() {
                 {item.label}
               </Link>
             ))}
+            <Button asChild variant="stage">
+              <Link to={session ? "/area-do-aluno" : "/auth"} onClick={() => setOpen(false)}>
+                <UserRound /> {session ? "Minha área" : "Área do aluno"}
+              </Link>
+            </Button>
             <Button asChild variant="whatsapp">
               <a href={whatsappLink("Olá Anderson! Vim pelo site Bora Tocar.")} target="_blank" rel="noreferrer">
                 <WhatsAppIcon /> Falar no WhatsApp

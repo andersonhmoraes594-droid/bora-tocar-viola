@@ -8,6 +8,13 @@
       "when": 1794098576246,
       "tag": "0000_area_do_aluno",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1794237338216,
+      "tag": "0001_duvidas",
+      "breakpoints": true
     }
   ]
 }

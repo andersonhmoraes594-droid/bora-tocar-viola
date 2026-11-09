@@ -16,9 +16,11 @@ export const minhaContaQuery = queryOptions({
     const { data, error } = await supabase.from("user_roles").select("role").eq("user_id", user.id);
     if (error) throw error;
     const roles = data.map((r) => r.role);
+    const nome = user.user_metadata?.["nome"];
     return {
       userId: user.id,
       email: user.email ?? "",
+      nome: typeof nome === "string" ? nome : "",
       isAdmin: roles.includes("admin"),
       isAluno: roles.includes("aluno"),
     };
@@ -56,6 +58,20 @@ export const recadosQuery = queryOptions({
   queryFn: async () => {
     const { data, error } = await supabase
       .from("announcements")
+      .select("*")
+      .order("created_at", { ascending: false });
+    if (error) throw error;
+    return data;
+  },
+});
+
+export type Duvida = Database["public"]["Tables"]["questions"]["Row"];
+
+export const duvidasQuery = queryOptions({
+  queryKey: ["duvidas"],
+  queryFn: async () => {
+    const { data, error } = await supabase
+      .from("questions")
       .select("*")
       .order("created_at", { ascending: false });
     if (error) throw error;

@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { CheckCircle2, Circle, Download, FileText, LogOut, Megaphone, PlayCircle, Settings } from "lucide-react";
+import { CheckCircle2, Circle, Download, FileText, LogOut, Megaphone, MessageCircleQuestion, PlayCircle, Settings } from "lucide-react";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 
@@ -18,8 +18,8 @@ import {
   recadosQuery,
   type Material,
 } from "@/lib/area-aluno.queries";
+import { temAcessoAoCurso } from "@/lib/acesso";
 import { useSignOut } from "@/lib/auth";
-import { whatsappLink } from "@/lib/contato";
 import { ETAPAS } from "@/lib/etapas";
 import { calcularProgresso } from "@/lib/progresso";
 import { toEmbedUrl } from "@/lib/video";
@@ -35,6 +35,10 @@ export const Route = createFileRoute("/_authenticated/area-do-aluno")({
       { property: "og:description", content: "Suas aulas de violão com o professor Anderson Moraes." },
     ],
   }),
+  beforeLoad: async ({ context }) => {
+    const conta = await context.queryClient.ensureQueryData(minhaContaQuery);
+    if (!temAcessoAoCurso(conta)) throw redirect({ to: "/assinatura" });
+  },
   loader: async ({ context }) => {
     await Promise.all([
       context.queryClient.ensureQueryData(minhaContaQuery),
@@ -91,23 +95,6 @@ function AreaDoAlunoPage() {
 
   if (!conta) return null;
 
-  if (!conta.isAdmin && !conta.isAluno) {
-    return (
-      <div className="mx-auto max-w-xl px-5 py-24 text-center">
-        <h1 className="text-3xl font-semibold">Sua conta ainda não foi liberada</h1>
-        <p className="mt-3 text-muted-foreground">Fale com o professor para liberar seu acesso.</p>
-        <div className="mt-6 flex justify-center gap-3">
-          <Button asChild variant="whatsapp">
-            <a href={whatsappLink("Olá Anderson! Minha conta da Área do Aluno não está liberada.")} target="_blank" rel="noreferrer">
-              Falar com o professor
-            </a>
-          </Button>
-          <Button variant="stage" onClick={sair}>Sair</Button>
-        </div>
-      </div>
-    );
-  }
-
   const embed = atual ? toEmbedUrl(atual.video_url) : null;
   const atualFeita = atual ? feitas.has(atual.id) : false;
 
@@ -121,9 +108,14 @@ function AreaDoAlunoPage() {
               <h1 className="mt-3 text-4xl font-semibold md:text-5xl">
                 Bora <span className="italic text-primary">tocar!</span>
               </h1>
-              <p className="mt-2 text-sm text-muted-foreground">{conta.email}</p>
+              <p className="mt-2 text-sm text-muted-foreground">{conta.nome || conta.email}</p>
             </div>
             <div className="flex flex-wrap gap-2">
+              <Button asChild variant="hero" size="sm">
+                <Link to="/duvidas">
+                  <MessageCircleQuestion /> Dúvidas e respostas
+                </Link>
+              </Button>
               {conta.isAdmin && (
                 <Button asChild variant="stage" size="sm">
                   <Link to="/professor">
